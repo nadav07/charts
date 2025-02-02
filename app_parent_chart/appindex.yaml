@@ -1,10 +1,10 @@
 subcharts:
   - name: backend-mongoexpress
     version: 0.1.0
-    description: "Subchart 1 for microservice A"
+    description: "Subchart backend-mongoexpress"
   - name: frontend-nodejs
     version: 0.1.0
-    description: "Subchart 2 for database B"
+    description: "Subchart frontend-nodejs"
   - name: mongodb
     version: 0.1.0
-    description: "Subchart 3 for cache C"
+    description: "Subchart mongodb"
