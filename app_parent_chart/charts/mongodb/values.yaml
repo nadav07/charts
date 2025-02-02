@@ -1,0 +1,5 @@
+# filepath: /home/user/charts/app_parent_chart/charts/mongodb/values.yaml
+mongodb:
+  user: user
+  password: password
+  database: test

@@ -1,0 +1,35 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: create-mongodb-user
+  namespace: app
+  annotations:
+    "helm.sh/hook": pre-install, pre-upgrade
+spec:
+  template:
+    spec:
+      containers:
+        - name: create-mongodb-user
+          image: mongo:6.0.12
+          command: ["sh", "-c"]
+          args:
+            - >
+              mongo --eval 'db.getSiblingDB("test").testCollection.insertOne({created: true}); 
+              db.getSiblingDB("test").createUser({
+                user: "{{ .Values.mongodb.user }}",
+                pwd: "{{ .Values.mongodb.password }}",
+                roles: [{ role: "readWrite", db: "test" }]
+              }); 
+              db.getSiblingDB("admin").grantRolesToUser("{{ .Values.mongodb.user }}", [{ role: "read", db: "admin" }]);'
+          env:
+            - name: MONGO_INITDB_ROOT_USERNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: mongo-config
+                  key: MONGO_INITDB_ROOT_USERNAME
+            - name: MONGO_INITDB_ROOT_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: mongo-config
+                  key: MONGO_INITDB_ROOT_PASSWORD
+      restartPolicy: OnFailure
