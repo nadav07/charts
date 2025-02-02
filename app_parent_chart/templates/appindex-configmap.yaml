@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: appindex
+data:
+  appindex.yaml: |
+    {{- .Files.Get "appindex.yaml" | nindent 4 }}
